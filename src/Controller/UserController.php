@@ -40,10 +40,6 @@ class UserController extends Controller
 
         $form->handleRequest($request);
 
-        dump($user);
-        if ($form->isSubmitted()) {
-            dump($form->isValid());
-        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             if (!empty($user->getPlainPassword())) {
@@ -54,7 +50,7 @@ class UserController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            //return $this->redirectToRoute('home');
+            return $this->redirectToRoute('home');
         }
 
         return $this->render('/user/update.html.twig',array('form' => $form->createView(),"user" => $user));

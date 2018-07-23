@@ -37,6 +37,12 @@ class Advertisment
      */
     private $author;
 
+    public function __construct(User $user)
+    {
+        $this->setCreationDate(new \DateTime());
+        $this->setAuthor($user);
+    }
+
     public function getId()
     {
         return $this->id;

@@ -2,12 +2,17 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("email")
+ * @UniqueEntity("phone")
  */
 class User implements UserInterface
 {
@@ -44,7 +49,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     *
      */
     private $password;
 
@@ -54,19 +59,28 @@ class User implements UserInterface
      */
     private $roles;
 
+    /**
+     * @var plainPassword
+     */
     private $plainPassword;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Advertisment", mappedBy="author", orphanRemoval=true)
+     */
+    private $advertisments;
 
 
     public function __construct()
     {
-        $this->setRoles(["ROLE_USER]"]);
+        $this->setRoles(["ROLE_USER"]);
+        $this->advertisments = new ArrayCollection();
     }
 
 
     public function getUsername()
     {
         // TODO: Implement getUsername() method.
-        return $this->getFirstname() . $this->getLastname();
+        return $this->getFirstname();
     }
 
     public function getSalt()
@@ -168,6 +182,37 @@ class User implements UserInterface
     public function setRoles($roles): self
     {
         $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Advertisment[]
+     */
+    public function getAdvertisments(): Collection
+    {
+        return $this->advertisments;
+    }
+
+    public function addAdvertisment(Advertisment $advertisment): self
+    {
+        if (!$this->advertisments->contains($advertisment)) {
+            $this->advertisments[] = $advertisment;
+            $advertisment->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdvertisment(Advertisment $advertisment): self
+    {
+        if ($this->advertisments->contains($advertisment)) {
+            $this->advertisments->removeElement($advertisment);
+            // set the owning side to null (unless already changed)
+            if ($advertisment->getAuthor() === $this) {
+                $advertisment->setAuthor(null);
+            }
+        }
 
         return $this;
     }

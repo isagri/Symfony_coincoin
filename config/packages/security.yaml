@@ -14,6 +14,12 @@ security:
             http_basic: ~
             provider: my_db_provider
             anonymous: ~
+            form_login:
+              login_path: login
+              check_path: login
+            logout:
+               path:   /logout
+               target: /
 
             # activate different ways to authenticate
 
@@ -26,7 +32,14 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+        - { path: ^/user , roles: ROLE_USER}
+        - { path: ^/ , roles: IS_AUTHENTICATED_ANONYMOUSLY}
+
         - { path: ^/public , roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/login , roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: / , roles: IS_AUTHENTICATED_ANONYMOUSLY}
+        - { path: ^/ , roles: ROLE_USER}
+
         #- { path:  , roles: ROLE_USER}
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

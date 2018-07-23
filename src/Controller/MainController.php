@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends Controller
 {
     /**
-     * @Route("/public", name="home")
+     * @Route("/", name="home")
      */
     public function home() {
         return $this->render('main/home.html.twig', ['project_name' => 'Coincoin']);

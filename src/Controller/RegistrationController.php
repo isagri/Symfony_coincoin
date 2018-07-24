@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Service\MailGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -21,7 +22,7 @@ class RegistrationController extends Controller
     /**
      * @Route("/register", name="register")
      */
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder) {
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, MailGenerator $mailGenerator) {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
 
@@ -35,7 +36,9 @@ class RegistrationController extends Controller
             $em->persist($user);
             $em->flush();
 
+            $mailGenerator->sendRegisterMail($user);
             return $this->redirectToRoute('home');
+
         }
         return $this->render('registration/register.html.twig', array('form' => $form->createView()));
     }

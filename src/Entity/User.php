@@ -66,6 +66,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Advertisment", mappedBy="author", orphanRemoval=true)
+     * // ajouter  fetch="EAGER"  pour forcer le chargement des advertisments
      */
     private $advertisments;
 

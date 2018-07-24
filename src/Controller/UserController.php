@@ -49,8 +49,6 @@ class UserController extends Controller
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-
-            return $this->redirectToRoute('home');
         }
 
         return $this->render('/user/update.html.twig',array('form' => $form->createView(),"user" => $user));

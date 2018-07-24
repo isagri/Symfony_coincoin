@@ -94,6 +94,7 @@ class AdvertismentController extends Controller
         /** @var User $user */
         $user = $this->getUser();
         dump($user->getAdvertisments());
+
         return $this->render('/advertisment/show.html.twig',array("advertisments" => $user->getAdvertisments()));
     }
 

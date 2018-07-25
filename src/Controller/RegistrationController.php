@@ -40,6 +40,6 @@ class RegistrationController extends Controller
             return $this->redirectToRoute('home');
 
         }
-        return $this->render('registration/register.html.twig', array('form' => $form->createView()));
+        return $this->render('registration/register.html.twig', array('form' => $form->createView(), 'screenName' => '/Register'));
     }
 }

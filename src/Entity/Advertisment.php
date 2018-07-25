@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\AdvertismentRepository")
@@ -37,10 +38,17 @@ class Advertisment
      */
     private $author;
 
-    public function __construct(User $user)
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo;
+
+    private $uploadPhoto;
+
+
+    public function __construct()
     {
         $this->setCreationDate(new \DateTime());
-        $this->setAuthor($user);
     }
 
     public function getId()
@@ -94,5 +102,32 @@ class Advertisment
         $this->author = $author;
 
         return $this;
+    }
+
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto($photo): self
+    {
+        $this->photo = $photo;
+
+        return $this;
+    }
+    /**
+     * @return mixed
+     */
+    public function getUploadPhoto()
+    {
+        return $this->uploadPhoto;
+    }
+
+    /**
+     * @param mixed $uploadPhoto
+     */
+    public function setUploadPhoto($uploadPhoto): void
+    {
+        $this->uploadPhoto = $uploadPhoto;
     }
 }

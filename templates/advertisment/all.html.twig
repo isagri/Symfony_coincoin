@@ -2,12 +2,10 @@
 {% block body %}
     <br/>
     <div class="container-fluid">
-        <div class="row">
-            <h2> The Advertisments :</h2>
-        </div>
         <table class="table">
             <div class="row">
                 <tr>
+                    <th class="col-xs-1">Action</th>
                     <th class="col-xs-2">Photos</th>
                     <th class="col-xs-3">Title</th>
                     <th class="col-xs-2">Creation Date</th>
@@ -18,14 +16,17 @@
             {% for advertisment in advertisments %}
                 <div class  = row>
                     <tr>
+                        <td class="col-xs-1">
+                            <a onclick="return confirm('are you sure?');" href="{{ url("advertisment_delete", {"advertisment":advertisment.id}) }}">Delete</a>
+                        </td>
                         <td class="col-xs-2">
-                            <a href="{{ url("advertisment_show", {"advertisment":advertisment.id}) }}">
+                            <a href="{{ url("advertisment_update", {"advertisment":advertisment.id}) }}">
                                 <img src=" {{ asset('uploads/photos/' ~ advertisment.photo) }}"
                                      alt=" {{ advertisment.title }}" width="80% "/>
                             </a>
                         </td>
                         <td class="col-xs-3">{{ advertisment.title }}</td>
-                        <td class="col-xs-2">{{ advertisment.creationDate|date }}</td>
+                        <td class="col-xs-1">{{ advertisment.creationDate|date }}</td>
                         <td class="col-xs-5"></td>
                     </tr>
                 </div>
@@ -36,6 +37,4 @@
             {% endfor %}
         </table>
     </div>
-
-
 {% endblock %}

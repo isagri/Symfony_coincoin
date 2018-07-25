@@ -51,6 +51,6 @@ class UserController extends Controller
             $em->flush();
         }
 
-        return $this->render('/user/update.html.twig',array('form' => $form->createView(),"user" => $user));
+        return $this->render('/user/update.html.twig',array('form' => $form->createView(),'user' => $user, 'screenName' => '/Update My Profile'));
     }
 }

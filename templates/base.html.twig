@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,12 +17,23 @@
     <body>
         {% block nav %}
             <nav>
-                <a href="{{ path('home') }}"><img src=" {{ asset('logo.png') }}" width="2%"></a> |
-                <a href="{{ path('login') }}">Login</a> |
-                <a href="{{ path('register') }}">Register</a> |
-                <a href="{{ path('user_update') }}">My Profile</a> |
-                <a href="{{ path('advertisment_show') }}">My Advertisments</a> |
-                <a href="{{ path('logout') }}">Logout</a> |
+                <div class = "container-fluid">
+                    <div class = "row">
+                        <div class = "col-xs-4">
+                            <a href="{{ path('home') }}">
+                                <img src=" {{ asset('logo.png') }}" width="10%"></a>
+                            <a href="{{ path('register') }}">Register</a> |
+                            <a href="{{ path('login') }}">Login</a> |
+                            <a href="{{ path('user_update') }}">My Profile</a> |
+                            <a href="{{ path('advertisment_all') }}">My Advertisments</a> |
+                            <a href="{{ path('advertisment_add') }}">Add Advertisment</a> |
+                            <a href="{{ path('logout') }}">Logout</a> |
+                        </div>
+                        <h2 class="col-xs-2"><a href="{{ path('home') }}">Welcome to Coincoin</a></h2>
+                        <h2 class="col-xs-2">{% if screenName is defined %}{{ screenName }}{%  endif %}</h2>
+                    </div>
+
+                </div>
             </nav>
         {% endblock %}
         {% block body %}{% endblock %}

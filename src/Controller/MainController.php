@@ -9,15 +9,20 @@
 namespace App\Controller;
 
 
+use App\Entity\Advertisment;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 class MainController extends Controller
 {
+    private $advertisments;
+
     /**
      * @Route("/", name="home")
      */
     public function home() {
-        return $this->render('main/home.html.twig', ['project_name' => 'Coincoin']);
+        $em = $this->getDoctrine()->getManager();
+        $this->advertisments = $em->getRepository(Advertisment::class)->findAll();
+        return $this->render('main/home.html.twig', ['advertisments' => $this->advertisments]);
     }
 
 }

@@ -1,34 +1,22 @@
 {% extends "base.html.twig" %}
-{% block nav %}
-   <nav>
-       <a href="{{ path('home') }}"><img src=" {{ asset('logo.png') }}" width="2%"></a> |
-       <a href="{{ path('advertisment_show') }}">My Advertisments</a> |
-       <a href="{{ path('advertisment_add') }}">Add Advertisment</a> |
-       <a href="{{ path('logout') }}">Logout</a> |
-   </nav>
-{% endblock %}
 
 {% block body %}
-    <table class="table">
-        <tr>
-            <th>Title</th>
-            <th>Creation Date</th>
-        </tr>
-        {% for advertisment in advertisments %}
-            <tr>
-                <td>
-                    <a href="{{ url("advertisment_update", {"advertisment":advertisment.id}) }}">{{ advertisment.title }}</a>
-                </td>
-                <td>{{ advertisment.creationDate|date }}</td>
-                <td>
-                    <a onclick="return confirm('are you sure?');" href="{{ url("advertisment_delete", {"advertisment":advertisment.id}) }}">Delete</a>
-                </td>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-6">
+                <img src=" {{ asset('uploads/photos/' ~ advertisment.photo) }}"
+                     alt=" {{ advertisment.title }}" width="100% "/>
+            </div>
+            <div class="col-xs-6">
+                <h3 class="row">Title</h3>
+                <h4 class="row">{{ advertisment.title }}</h4>
+                <h3 class="row">Description</h3>
+                <h4 class="row">{{ advertisment.description }}</h4>
+                <h3 class="row">Creation date</h3>
+                <h4 class="row">{{ advertisment.creationDate|date }}</h4>
 
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">No content available</td>
-            </tr>
-        {% endfor %}
-    </table>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

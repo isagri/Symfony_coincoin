@@ -46,103 +46,113 @@
       <DataType>DATE|0s</DataType>
       <DefaultExpression>NULL</DefaultExpression>
     </column>
-    <index id="16" parent="6" name="IDX_891141C7F675F31B">
+    <column id="16" parent="6" name="photo">
+      <Position>6</Position>
+      <DataType>VARCHAR(255)|0s</DataType>
+      <DefaultExpression>NULL</DefaultExpression>
+    </column>
+    <index id="17" parent="6" name="IDX_891141C7F675F31B">
       <ColNames>author_id</ColNames>
       <ColumnCollations></ColumnCollations>
     </index>
-    <key id="17" parent="6">
+    <key id="18" parent="6">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>
-    <column id="18" parent="7" name="version">
+    <foreign-key id="19" parent="6" name="FK_891141C7F675F31B">
+      <ColNames>author_id</ColNames>
+      <RefTableName>user</RefTableName>
+      <RefColNames>id</RefColNames>
+    </foreign-key>
+    <column id="20" parent="7" name="version">
       <Position>1</Position>
       <DataType>VARCHAR(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="19" parent="7" name="sqlite_autoindex_migration_versions_1">
+    <index id="21" parent="7" name="sqlite_autoindex_migration_versions_1">
       <NameSurrogate>1</NameSurrogate>
       <ColNames>version</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="20" parent="7">
+    <key id="22" parent="7">
       <ColNames>version</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>sqlite_autoindex_migration_versions_1</UnderlyingIndexName>
     </key>
-    <column id="21" parent="8" name="type">
+    <column id="23" parent="8" name="type">
       <Position>1</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="22" parent="8" name="name">
+    <column id="24" parent="8" name="name">
       <Position>2</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="23" parent="8" name="tbl_name">
+    <column id="25" parent="8" name="tbl_name">
       <Position>3</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="24" parent="8" name="rootpage">
+    <column id="26" parent="8" name="rootpage">
       <Position>4</Position>
       <DataType>integer|0s</DataType>
     </column>
-    <column id="25" parent="8" name="sql">
+    <column id="27" parent="8" name="sql">
       <Position>5</Position>
       <DataType>text|0s</DataType>
     </column>
-    <column id="26" parent="9" name="name">
+    <column id="28" parent="9" name="name">
       <Position>1</Position>
     </column>
-    <column id="27" parent="9" name="seq">
+    <column id="29" parent="9" name="seq">
       <Position>2</Position>
     </column>
-    <column id="28" parent="10" name="id">
+    <column id="30" parent="10" name="id">
       <Position>1</Position>
       <DataType>INTEGER|0s</DataType>
       <NotNull>1</NotNull>
       <SequenceIdentity>1</SequenceIdentity>
     </column>
-    <column id="29" parent="10" name="firstname">
+    <column id="31" parent="10" name="firstname">
       <Position>2</Position>
       <DataType>VARCHAR(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="30" parent="10" name="lastname">
+    <column id="32" parent="10" name="lastname">
       <Position>3</Position>
       <DataType>VARCHAR(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="31" parent="10" name="phone">
+    <column id="33" parent="10" name="phone">
       <Position>4</Position>
       <DataType>VARCHAR(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="32" parent="10" name="email">
+    <column id="34" parent="10" name="email">
       <Position>5</Position>
       <DataType>VARCHAR(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="33" parent="10" name="password">
+    <column id="35" parent="10" name="password">
       <Position>6</Position>
       <DataType>VARCHAR(255)|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <column id="34" parent="10" name="roles">
+    <column id="36" parent="10" name="roles">
       <Position>7</Position>
       <DataType>CLOB|0s</DataType>
       <NotNull>1</NotNull>
     </column>
-    <index id="35" parent="10" name="UNIQ_8D93D649444F97DD">
+    <index id="37" parent="10" name="UNIQ_8D93D649444F97DD">
       <ColNames>phone</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <index id="36" parent="10" name="UNIQ_8D93D649E7927C74">
+    <index id="38" parent="10" name="UNIQ_8D93D649E7927C74">
       <ColNames>email</ColNames>
       <ColumnCollations></ColumnCollations>
       <Unique>1</Unique>
     </index>
-    <key id="37" parent="10">
+    <key id="39" parent="10">
       <ColNames>id</ColNames>
       <Primary>1</Primary>
     </key>

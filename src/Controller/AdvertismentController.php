@@ -11,6 +11,8 @@ namespace App\Controller;
 
 use App\Entity\Advertisment;
 use App\Entity\User;
+use App\Form\AdvertismentType;
+use App\Service\FileUpLoader;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -22,80 +24,111 @@ class AdvertismentController extends Controller
     /**
      * @Route("/advertisment/add",name="advertisment_add")
      */
-    function add(Request $request) {
+    function add(Request $request, FileUpLoader $fileUpLoader) {
         /** @var User $user */
         $user = $this->getUser();
 
-        $advertisment = new Advertisment($user);
-        $form = $this->createFormBuilder($advertisment)
-            ->add("title",TextType::class)
-            ->add("description",TextType::class)
-            ->add("creationDate",DateType::class)
-            ->getForm();
+        $advertisment = new Advertisment();
+        $advertisment->setAuthor($user);
+        $form = $this->createForm(AdvertismentType::class, $advertisment);
 
         $form->handleRequest($request);
 
-        dump($advertisment);
         if ($form->isSubmitted() && $form->isValid()) {
+            // photo upload   $file stores the uploaded file
+            $file = $form->get("uploadPhoto")->getData();
+            if ($file != null ) {
+                $fileName = $fileUpLoader->upload($file);
+                $advertisment->setPhoto($fileName);
+                dump($advertisment);
+            }
+
+            // maj $advertisment en bdd
             $em = $this->getDoctrine()->getManager();
             $em->persist($advertisment);
             $em->flush();
+//            $user->addAdvertisment($advertisment);
 
-            $user->addAdvertisment($advertisment);
-            return $this->redirectToRoute('advertisment_show');
+            return $this->redirectToRoute('advertisment_all');
         }
 
-        return $this->render('/advertisment/add.html.twig',array('form' => $form->createView(),"advertisment" => $advertisment));
+
+        return $this->render('/advertisment/add.html.twig',array('form' => $form->createView(), 'advertisment' => $advertisment, 'screenName' => '/Add Advertisment'));
     }
 
     /**
      * @Route("/advertisment/update/{advertisment}",name="advertisment_update")
      */
-    function update(Request $request, Advertisment $advertisment) {
+    function update(Request $request, Advertisment $advertisment, FileUpLoader $fileUpLoader) {
 
-        $form = $this->createFormBuilder($advertisment)
-            ->add("title",TextType::class)
-            ->add("description",TextType::class)
-            ->add("creationDate",DateType::class)
-            ->getForm();
+        $form = $this->createForm(AdvertismentType::class, $advertisment);
+
+//        $form = $this->createFormBuilder($advertisment)
+//            ->add("title",TextType::class)
+//            ->add("description",TextType::class)
+//            ->add("creationDate",DateType::class)
+//            ->getForm();
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // photo upload   $file stores the uploaded file
+            $file = $form->get("uploadPhoto")->getData();
+            if ($file != null ) {
+                if ($advertisment->getPhoto() != null) {
+                    $fileUpLoader->deleteUpload($advertisment->getPhoto());
+                }
+
+                $fileName = $fileUpLoader->upload($file);
+                $advertisment->setPhoto($fileName);
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            return $this->redirectToRoute('advertisment_show');
+            return $this->redirectToRoute('advertisment_all');
         }
 
-        return $this->render('/advertisment/add.html.twig',array('form' => $form->createView(),"advertisment" => $advertisment));
+        return $this->render('/advertisment/add.html.twig',array('form' => $form->createView(), 'advertisment' => $advertisment, 'screenName' => '/Update Advertisment'));
     }
+
+    /**
+     * @Route("/advertisment/show/{advertisment}",name="advertisment_show")
+     */
+    function show(Advertisment $advertisment) {
+
+        return $this->render('/advertisment/show.html.twig',array("advertisment" => $advertisment, 'screenName' => '/Show Advertisment'));
+    }
+
 
     /**
      * @Route("/advertisment/delete/{advertisment}",name="advertisment_delete")
      */
-    function delete(Request $request, Advertisment $advertisment) {
+    function delete(Request $request, Advertisment $advertisment, FileUpLoader $fileUpLoader) {
         /** @var User $user */
         $user=$this->getUser();
         $user->removeAdvertisment($advertisment);
+
+        if ($advertisment->getPhoto() != null) {
+            $fileUpLoader->deleteUpload($advertisment->getPhoto());
+        }
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($advertisment);
         $em->flush();
 
-        return $this->redirectToRoute('advertisment_show');
+        return $this->redirectToRoute('advertisment_all');
     }
 
 
     /**
-     * @Route("/advertisment/show",name="advertisment_show")
+     * @Route("/advertisment/all",name="advertisment_all")
      */
-    function show(Request $request) {
+    function all(Request $request) {
         /** @var User $user */
         $user = $this->getUser();
-        dump($user->getAdvertisments());
 
-        return $this->render('/advertisment/show.html.twig',array("advertisments" => $user->getAdvertisments()));
+        return $this->render('/advertisment/all.html.twig',array("advertisments" => $user->getAdvertisments(), 'screenName' => '/My Advertisments'));
     }
 
 }

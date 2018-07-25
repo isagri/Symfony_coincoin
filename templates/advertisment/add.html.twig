@@ -1,17 +1,22 @@
 {% extends "base.html.twig" %}
-{% block nav %}
-    <nav>
-        <a href="{{ path('home') }}"><img src=" {{ asset('logo.png') }}" width="2%"></a> |
-        <a href="{{ path('advertisment_show') }}">My Advertisments</a> |
-        <a href="{{ path('logout') }}">Logout</a> |
-    </nav>
-{% endblock %}
 {% block body %}
-    {{ form_start(form) }}
-    {{ form_row(form.title) }}
-    {{ form_row(form.description) }}
-    {{ form_row(form.creationDate) }}
-    <br/>
-    <button type="submit">Save !</button>
-    {{ form_end(form) }}
+    <div class = "container">
+
+        {{ form_start(form) }}
+        {{ form_row(form.title) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.creationDate) }}
+        <div class="row">
+            <div class="col-xs-4">
+                <img src=" {{ asset('uploads/photos/' ~ advertisment.photo) }}"
+                     alt=" {{ advertisment.title }}" width="80% "/>
+            </div>
+            <div class="col-xs-8">
+                {{ form_row(form.uploadPhoto) }}
+            </div>
+        </div>
+        <br/>
+        <button type="submit">Save !</button>
+        {{ form_end(form) }}
+    </div>
 {% endblock %}

@@ -2,40 +2,87 @@
 {% block body %}
     <br/>
     <div class="container-fluid">
-        <div class="row">
-            <h2> The Advertisments :</h2>
-        </div>
-        <table class="table">
+        <h2 class="row"> The Advertisments :</h2>
+
+       <table class="table">
             <div class="row">
                 <tr>
-                    <th class="col-xs-2">Photos</th>
+                    <th class="col-xs-2">Photo</th>
                     <th class="col-xs-3">Title</th>
-                    <th class="col-xs-2">Creation Date</th>
-                    <th class="col-xs-5"></th>
+                    <th class="col-xs-1">Price (euros)</th>
+                    <th class="col-xs-1">Creation Date</th>
+                    <th class="col-xs-2">Category</th>
+                    <th class="col-xs-2">Region</th>
+                    {% if (is_granted('ROLE_MODERATEUR')) %}
+                    <th class="col-xs-1">Active</th>
+                    {% endif %}
                 </tr>
             </div>
 
             {% for advertisment in advertisments %}
-                <div class  = row>
-                    <tr>
-                        <td class="col-xs-2">
-                            <a href="{{ url("advertisment_show", {"advertisment":advertisment.id}) }}">
-                                <img src=" {{ asset('uploads/photos/' ~ advertisment.photo) }}"
-                                     alt=" {{ advertisment.title }}" width="80% "/>
-                            </a>
-                        </td>
-                        <td class="col-xs-3">{{ advertisment.title }}</td>
-                        <td class="col-xs-2">{{ advertisment.creationDate|date }}</td>
-                        <td class="col-xs-5"></td>
-                    </tr>
-                </div>
+                {% if ( is_granted('ROLE_MODERATEUR') or advertisment.active) %}
+                    <div class = "row">
+                        <tr>
+                            <td class="col-xs-2">
+                                <a href="{{ url("advertisment_show", {"advertisment":advertisment.id}) }}">
+                                    <img src=" {{ asset('uploads/photos/' ~ advertisment.photo) }}"
+                                         alt=" {{ advertisment.title }}" width="50% "/>
+                                </a>
+                            </td>
+
+                            <td class="col-xs-3">{{ advertisment.title }}</td>
+                            <td class="col-xs-1">{{ advertisment.price }}</td>
+                            <td class="col-xs-1">{{ advertisment.creationDate|date }}</td>
+                            <td class="col-xs-2">{% if (advertisment.category is not null) %} {{ advertisment.category.name }} {% endif %}</td>
+                            <td class="col-xs-2">{% if (advertisment.region is not null) %} {{ advertisment.region.name }} {% endif %}</td>
+                            {% if is_granted('ROLE_MODERATEUR') %}
+                                <td class="col-xs-1">
+                                    <a href="{{ url("advertisment_hide", {"advertisment":advertisment.id}) }}">
+                                        {% if advertisment.active %} HIDE {% else %} SHOW {% endif %}</td>
+                            {% endif %}
+                        </tr>
+                    </div>
+                {% endif %}
             {% else %}
                 <tr>
                     <td colspan="3">No content available</td>
                 </tr>
             {% endfor %}
-        </table>
-    </div>
+       </table>
+
+
+
+        {#<table class="table">#}
+            {#<div class="row">#}
+                {#<tr>#}
+                    {#<th class="col-xs-2">Photos</th>#}
+                    {#<th class="col-xs-3">Title</th>#}
+                    {#<th class="col-xs-2">Creation Date</th>#}
+                    {#<th class="col-xs-5"></th>#}
+                {#</tr>#}
+            {#</div>#}
+
+            {#{% for advertisment in advertisments %}#}
+                {#<div class  = row>#}
+                    {#<tr>#}
+                        {#<td class="col-xs-2">#}
+                            {#<a href="{{ url("advertisment_show", {"advertisment":advertisment.id}) }}">#}
+                                {#<img src=" {{ asset('uploads/photos/' ~ advertisment.photo) }}"#}
+                                     {#alt=" {{ advertisment.title }}" width="80% "/>#}
+                            {#</a>#}
+                        {#</td>#}
+                        {#<td class="col-xs-3">{{ advertisment.title }}</td>#}
+                        {#<td class="col-xs-2">{{ advertisment.creationDate|date }}</td>#}
+                        {#<td class="col-xs-5"></td>#}
+                    {#</tr>#}
+                {#</div>#}
+            {#{% else %}#}
+                {#<tr>#}
+                    {#<td colspan="3">No content available</td>#}
+                {#</tr>#}
+            {#{% endfor %}#}
+        {#</table>#}
+    {#</div>#}
 
 
 {% endblock %}

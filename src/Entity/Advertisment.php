@@ -46,14 +46,30 @@ class Advertisment
     private $uploadPhoto;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="advertisment")
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $active;
+
+    /**
+     * @ORM\Column(type="float", nullable=true)
+     */
+    private $price;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="advertisments")
      */
     private $category;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Region", inversedBy="advertisments")
+     */
+    private $region;
 
 
     public function __construct()
     {
         $this->setCreationDate(new \DateTime());
+        $this->setActive(true);
     }
 
     public function getId()
@@ -144,6 +160,42 @@ class Advertisment
     public function setCategory(?Category $category): self
     {
         $this->category = $category;
+
+        return $this;
+    }
+
+    public function getActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(?bool $active): self
+    {
+        $this->active = $active;
+
+        return $this;
+    }
+
+    public function getPrice(): ?float
+    {
+        return $this->price;
+    }
+
+    public function setPrice(?float $price): self
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    public function getRegion(): ?Region
+    {
+        return $this->region;
+    }
+
+    public function setRegion(?Region $region): self
+    {
+        $this->region = $region;
 
         return $this;
     }

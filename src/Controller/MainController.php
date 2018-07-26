@@ -22,6 +22,7 @@ class MainController extends Controller
     public function home() {
         $em = $this->getDoctrine()->getManager();
         $this->advertisments = $em->getRepository(Advertisment::class)->findAll();
+        dump($this->getUser());
         return $this->render('main/home.html.twig', ['advertisments' => $this->advertisments]);
     }
 

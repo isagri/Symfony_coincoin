@@ -5,24 +5,36 @@
         <div class="row">
             <div class="col-xs-6">
                 <img src=" {{ asset('uploads/photos/' ~ advertisment.photo) }}"
-                     alt=" {{ advertisment.title }}" width="70% "/>
+                     alt=" {{ advertisment.title }}" width="50% "/>
             </div>
             <div class="col-xs-6">
+                <h3 class="row">Region</h3>
+                <h4 class="row">{% if (advertisment.region is not null) %}{{ advertisment.region.name }} {% endif %}</h4>
+                <h3 class="row">Category</h3>
+                <h4 class="row">{% if (advertisment.category is not null) %}{{ advertisment.category.name }} {%  endif %}</h4>
                 <h3 class="row">Title</h3>
                 <h4 class="row">{{ advertisment.title }}</h4>
                 <h3 class="row">Description</h3>
                 <h4 class="row">{{ advertisment.description }}</h4>
+                <h3 class="row">Price (euros)</h3>
+                <h4 class="row">{{ advertisment.price }}</h4>
                 <h3 class="row">Creation date</h3>
                 <h4 class="row">{{ advertisment.creationDate|date }}</h4>
+                <br/><br/>
+                {% if is_granted('ROLE_USER') %}
+                    <h3 class="row">Seller's Contact Informations</h3>
+                    <h4 class="row">{{ advertisment.author.firstname }} {{ advertisment.author.lastname }}</h4>
+                    <h4 class="row">{{ advertisment.author.email }}</h4>
+                    <h4 class="row">{{ advertisment.author.phone }}</h4>
+                {% else %}
+                    <h3>Please login to see the seller's contact informations</h3>
+                {% endif %}
+
+
+
             </div>
         </div>
 
-        {% if is_granted('ROLE_USER') %}
-            <h3 class="row">Seller's Contact Informations</h3>
-            <h4 class="row">{{ advertisment.author.firstname }} {{ advertisment.author.lastname }} - {{ advertisment.author.phone }} - {{ advertisment.author.email }}</h4>
-        {% else %}
-            <h3>Please login to see the seller's contact informations</h3>
-        {% endif %}
     </div>
 
 {% endblock %}

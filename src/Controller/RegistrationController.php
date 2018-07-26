@@ -10,7 +10,7 @@ namespace App\Controller;
 
 
 use App\Entity\User;
-use App\Form\UserType;
+use App\Form\RegistrationType;
 use App\Service\MailGenerator;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,7 +24,7 @@ class RegistrationController extends Controller
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, MailGenerator $mailGenerator) {
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm(RegistrationType::class, $user);
 
         // après validation
         $form->handleRequest($request);

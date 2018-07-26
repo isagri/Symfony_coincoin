@@ -9,12 +9,10 @@
 namespace App\Controller;
 
 
+
 use App\Entity\User;
+use App\Form\UserType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
-use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -29,17 +27,7 @@ class UserController extends Controller
         /** @var User $user */
 
         $user = $this->getUser();
-        $form = $this->createFormBuilder($user)
-            ->add("firstname",TextType::class)
-            ->add("lastname",TextType::class)
-            ->add('phone',TextType::class)
-            ->add('email',EmailType::class)
-            ->add('plainPassword',RepeatedType::class, array(
-                'type' => PasswordType::class,
-                'required'       => false,
-                'first_options'  => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat Password') ))
-            ->getForm();
+        $form = $this->createForm(UserType::class, $user);
 
         $form->handleRequest($request);
 

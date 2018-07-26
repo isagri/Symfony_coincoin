@@ -26,10 +26,14 @@ class AdvertismentController extends Controller
      */
     function add(Request $request, FileUpLoader $fileUpLoader) {
         /** @var User $user */
+
         $user = $this->getUser();
 
         $advertisment = new Advertisment();
-        $advertisment->setAuthor($user);
+        $advertisment
+            ->setAuthor($user)
+            ->setRegion($user->getRegion());
+
         $form = $this->createForm(AdvertismentType::class, $advertisment);
 
         $form->handleRequest($request);
@@ -60,6 +64,11 @@ class AdvertismentController extends Controller
      * @Route("/advertisment/update/{advertisment}",name="advertisment_update")
      */
     function update(Request $request, Advertisment $advertisment, FileUpLoader $fileUpLoader) {
+
+        // pour éviter une modif par un user qui n'est pas le propriétaire (accès direct par l'url)
+        if ($advertisment->getauthor()->getId() != $this->getUser()->getId())
+            return $this->redirectToRoute('logout');
+
 
         $form = $this->createForm(AdvertismentType::class, $advertisment);
 
@@ -93,6 +102,23 @@ class AdvertismentController extends Controller
     }
 
     /**
+     * @Route("/advertisment/hide/{advertisment}",name="advertisment_hide")
+     */
+    function hide(Advertisment $advertisment) {
+
+        // pour éviter un hide/show par un user qui n'est pas modérateur (accès direct par l'url)
+        if ( !$this->isGranted("ROLE_MODERATEUR"))
+            return $this->redirectToRoute('logout');
+
+        $advertisment->getActive() ? $advertisment->setActive(false) : $advertisment->setActive(true);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            return $this->redirectToRoute('home');
+    }
+
+    /**
      * @Route("/advertisment/show/{advertisment}",name="advertisment_show")
      */
     function show(Advertisment $advertisment) {
@@ -106,8 +132,10 @@ class AdvertismentController extends Controller
      */
     function delete(Request $request, Advertisment $advertisment, FileUpLoader $fileUpLoader) {
         /** @var User $user */
-        $user=$this->getUser();
-        $user->removeAdvertisment($advertisment);
+
+        // pour éviter une delete par un user qui n'est pas le propriétaire (accès direct par l'url)
+        if ($advertisment->getauthor()->getId() != $this->getUser()->getId())
+            return $this->redirectToRoute('logout');
 
         if ($advertisment->getPhoto() != null) {
             $fileUpLoader->deleteUpload($advertisment->getPhoto());

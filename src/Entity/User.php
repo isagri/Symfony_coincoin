@@ -70,6 +70,11 @@ class User implements UserInterface
      */
     private $advertisments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Region", inversedBy="users")
+     */
+    private $region;
+
 
     public function __construct()
     {
@@ -214,6 +219,18 @@ class User implements UserInterface
                 $advertisment->setAuthor(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getRegion(): ?Region
+    {
+        return $this->region;
+    }
+
+    public function setRegion(?Region $region): self
+    {
+        $this->region = $region;
 
         return $this;
     }

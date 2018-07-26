@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-xs-6">
                 <img src=" {{ asset('uploads/photos/' ~ advertisment.photo) }}"
-                     alt=" {{ advertisment.title }}" width="100% "/>
+                     alt=" {{ advertisment.title }}" width="70% "/>
             </div>
             <div class="col-xs-6">
                 <h3 class="row">Title</h3>
@@ -14,9 +14,15 @@
                 <h4 class="row">{{ advertisment.description }}</h4>
                 <h3 class="row">Creation date</h3>
                 <h4 class="row">{{ advertisment.creationDate|date }}</h4>
-
             </div>
         </div>
+
+        {% if is_granted('ROLE_USER') %}
+            <h3 class="row">Seller's Contact Informations</h3>
+            <h4 class="row">{{ advertisment.author.firstname }} {{ advertisment.author.lastname }} - {{ advertisment.author.phone }} - {{ advertisment.author.email }}</h4>
+        {% else %}
+            <h3>Please login to see the seller's contact informations</h3>
+        {% endif %}
     </div>
 
 {% endblock %}

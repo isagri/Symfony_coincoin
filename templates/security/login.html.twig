@@ -6,11 +6,16 @@
     <div class="container">
         <form action="{{ path('login') }}" method="post">
             <br/>
-            <label for="username">Username:</label>
-            <input type="text" id="username" name="_username" value="{{ last_username }}" />
-
-            <label for="password">Password:</label>
-            <input type="password" id="password" name="_password" />
+            <div class="row">
+                <label for="username" class="col-xs-2">Email or Phone number</label>
+                <input class="col-xs-6" type="text" id="username" name="_username" value="{{ last_username }} " />
+            </div>
+            <br>
+            <div class="row">
+                <label for="password" class="col-xs-2">Password</label>
+                <input class="col-xs-6" type="password" id="password" name="_password" />
+            </div>
+            <br/>
             <button type="submit">login</button>
 
             <br/><br/>

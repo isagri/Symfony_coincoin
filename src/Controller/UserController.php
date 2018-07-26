@@ -9,9 +9,9 @@
 namespace App\Controller;
 
 
-use App\Form\UserType;
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -32,8 +32,11 @@ class UserController extends Controller
         $form = $this->createFormBuilder($user)
             ->add("firstname",TextType::class)
             ->add("lastname",TextType::class)
+            ->add('phone',TextType::class)
+            ->add('email',EmailType::class)
             ->add('plainPassword',RepeatedType::class, array(
                 'type' => PasswordType::class,
+                'required'       => false,
                 'first_options'  => array('label' => 'Password'),
                 'second_options' => array('label' => 'Repeat Password') ))
             ->getForm();
@@ -49,6 +52,9 @@ class UserController extends Controller
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
+
+            return $this->redirectToRoute('home');
+
         }
 
         return $this->render('/user/update.html.twig',array('form' => $form->createView(),'user' => $user, 'screenName' => '/Update My Profile'));

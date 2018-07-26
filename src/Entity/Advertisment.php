@@ -45,6 +45,11 @@ class Advertisment
 
     private $uploadPhoto;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Category", inversedBy="advertisment")
+     */
+    private $category;
+
 
     public function __construct()
     {
@@ -129,5 +134,17 @@ class Advertisment
     public function setUploadPhoto($uploadPhoto): void
     {
         $this->uploadPhoto = $uploadPhoto;
+    }
+
+    public function getCategory(): ?Category
+    {
+        return $this->category;
+    }
+
+    public function setCategory(?Category $category): self
+    {
+        $this->category = $category;
+
+        return $this;
     }
 }

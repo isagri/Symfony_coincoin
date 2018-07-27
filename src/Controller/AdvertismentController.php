@@ -44,7 +44,6 @@ class AdvertismentController extends Controller
             if ($file != null ) {
                 $fileName = $fileUpLoader->upload($file);
                 $advertisment->setPhoto($fileName);
-                dump($advertisment);
             }
 
             // maj $advertisment en bdd

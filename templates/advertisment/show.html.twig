@@ -23,9 +23,9 @@
                 <br/><br/>
                 {% if is_granted('ROLE_USER') %}
                     <h3 class="row">Seller's Contact Informations</h3>
-                    <h4 class="row">{{ advertisment.author.firstname }} {{ advertisment.author.lastname }}</h4>
-                    <h4 class="row">{{ advertisment.author.email }}</h4>
-                    <h4 class="row">{{ advertisment.author.phone }}</h4>
+                    <h4 class="row">Name  : {{ advertisment.author.firstname }} {{ advertisment.author.lastname }}</h4>
+                    <h4 class="row">Email : {{ advertisment.author.email }}</h4>
+                    <h4 class="row">Phone : {{ advertisment.author.phone }}</h4>
                 {% else %}
                     <h3>Please login to see the seller's contact informations</h3>
                 {% endif %}

@@ -2,9 +2,24 @@
 {% block body %}
     <br/>
     <div class="container-fluid">
-        <h2 class="row"> The Advertisments :</h2>
+        <div class = "row" style="background-color: #5eb5e0">
+            {#<h2 class="col-xs-2">Advertisments :</h2>#}
+            <h3 class="col-xs-1 col-xs-offset-1">Search by</h3>
+            <br/>
+            {{ form_start(form) }}
+            <div class="col-xs-4">
+                {{ form_row(form.searchTitle) }}
+            </div>
+            <div class="col-xs-4">
+                {{ form_row(form.region) }}
+            </div>
+            <div class="col-xs-2">
+                <button type="submit">Search !</button>
+            </div>
+            {{ form_end(form) }}
+        </div>
 
-       <table class="table">
+        <table class="table">
             <div class="row">
                 <tr>
                     <th class="col-xs-2">Photo</th>

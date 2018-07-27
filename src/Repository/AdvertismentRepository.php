@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Advertisment;
+use App\Entity\Region;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
@@ -18,6 +19,46 @@ class AdvertismentRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Advertisment::class);
     }
+
+    /**
+     * @return Advertisment[] Returns an array of Advertisment objects
+     */
+
+    public function searchByTitle($title)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.title like :searchTitle')
+            ->setParameter('searchTitle', '%'.$title."%")
+            ->orderBy('a.creationDate', 'DESC')
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    public function searchByRegion(Region $region)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.region = :region')
+            ->setParameter('region', $region)
+            ->orderBy('a.creationDate', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+    public function searchByRegionTitle(Region $region, $title)
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.region = :region and a.title like :searchTitle')
+            ->setParameter('region', $region)
+            ->setParameter('searchTitle', '%'.$title."%")
+            ->orderBy('a.creationDate', 'DESC')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+
+
 
 //    /**
 //     * @return Advertisment[] Returns an array of Advertisment objects
